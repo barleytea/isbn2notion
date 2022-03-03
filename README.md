@@ -12,8 +12,8 @@ sequenceDiagram
   AppSheet Client->>+GAS: webhookでISBNをPOST
   GAS->>+OpenBD: 書誌情報を検索
   OpenBD->>-GAS: 書誌情報を返却
-  GAS->>+AppSheetServer: 書誌情報を保存
-  GAS->>+Notion: 書誌情報を保存
+  GAS->>+AppSheetServer: AppSheet APIで書誌情報を保存
+  GAS->>+Notion: Notion APIで書誌情報を保存
 ```
 
 ## 環境変数設定

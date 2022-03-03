@@ -4,14 +4,17 @@ ISBNから書誌情報を取得し、Notionのデータベースに挿入する�
 
 ## シーケンス図
 
+```mermaid
 sequenceDiagram
   autonumber
+  actor User
   User->>+AppSheet Client: ISBNを登録
   AppSheet Client->>+GAS: webhookでISBNをPOST
   GAS->>+OpenBD: 書誌情報を検索
   OpenBD->>-GAS: 書誌情報を返却
   GAS->>+AppSheetServer: 書誌情報を保存
   GAS->>+Notion: 書誌情報を保存
+```
 
 ## 環境変数設定
 

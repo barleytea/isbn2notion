@@ -23,6 +23,15 @@ function doPost(e) {
     author: response.author,
   };
 
+  // notion に既に ISBN が登録済みであれば skip
+  const page = NotionApi.fetchPageByIsbn(isbnCode);
+  if (page && page.results && page.results.length > 0) {
+    console.log(
+      `skipped isbn: ${isbnCode}, because this isbn already registered.`
+    );
+    return;
+  }
+
   // AppSheet に書誌情報の概要レコードを追加
   AppSheetApi.postBookSummary(summary);
 

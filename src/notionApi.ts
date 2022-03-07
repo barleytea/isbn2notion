@@ -2,6 +2,7 @@ import { BookSummary } from "./types";
 
 export namespace NotionApi {
   const notionEndpoint = "https://api.notion.com/v1/pages";
+  const notionDabaBaseEndPoint = "https://api.notion.com/v1/databases/";
 
   const properties = PropertiesService.getScriptProperties().getProperties();
   const { NOTION_TOKEN, NOTION_DB_ID } = properties;
@@ -84,5 +85,30 @@ export namespace NotionApi {
     };
 
     return UrlFetchApp.fetch(notionEndpoint, options);
+  };
+
+  export const fetchPageByIsbn = (isbn: string) => {
+    const postData = {
+      filter: {
+        property: "ISBN",
+        rich_text: {
+          equals: isbn,
+        },
+      },
+    };
+
+    const options = {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+        Authorization: "Bearer " + NOTION_TOKEN,
+        "Notion-Version": "2021-05-13",
+      },
+      payload: JSON.stringify(postData),
+    };
+
+    return JSON.parse(
+      UrlFetchApp.fetch(notionDabaBaseEndPoint + NOTION_DB_ID + "/query", options).getContentText("UTF-8")
+    );
   };
 }

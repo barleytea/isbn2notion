@@ -8,6 +8,9 @@ export namespace BooksApi {
     const response = JSON.parse(
       UrlFetchApp.fetch(bookApi + isbn).getContentText("UTF-8")
     )[0];
+    if (!response) {
+      return undefined;
+    }
     return response.summary;
   };
 }

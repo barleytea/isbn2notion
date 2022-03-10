@@ -108,7 +108,10 @@ export namespace NotionApi {
     };
 
     return JSON.parse(
-      UrlFetchApp.fetch(notionDabaBaseEndPoint + NOTION_DB_ID + "/query", options).getContentText("UTF-8")
+      UrlFetchApp.fetch(
+        notionDabaBaseEndPoint + NOTION_DB_ID + "/query",
+        options
+      ).getContentText("UTF-8")
     );
   };
 }

@@ -1,5 +1,5 @@
 export type BookSummary = {
-  id: string; // AppSheet の record の ID
+  id: string;
   isbn: string;
   title: string;
   publisher: string;

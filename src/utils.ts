@@ -1,6 +1,6 @@
 export namespace Utils {
   export const formatDate = (dateStr: string) => {
-    if (dateStr.length === 12 && dateStr.indexOf("-") < 0) {
+    if (dateStr.length === 8 && dateStr.indexOf("-") < 0) {
       // YYYYMMDD を想定
       return (
         dateStr.slice(0, 4) +

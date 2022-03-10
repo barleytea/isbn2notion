@@ -10,7 +10,7 @@ export namespace GoogleBooksApi {
       UrlFetchApp.fetch(bookApi + isbn).getContentText("UTF-8")
     );
 
-    if (response.totalItems !== 1) {
+    if (response.totalItems < 1) {
       return undefined;
     }
 

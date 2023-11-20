@@ -1,10 +1,10 @@
-import { BookSummary } from "./types";
+import { type BookSummary } from "./types";
 
 export namespace AppSheetApi {
   const properties = PropertiesService.getScriptProperties().getProperties();
   const { APP_SHEET_URL, APP_SHEET_KEY } = properties;
 
-  export const postBookSummary = (summary: BookSummary) => {
+  export const postBookSummary = (summary: BookSummary): void => {
     // AppSheet API に渡す params の payload 部分を組み立てる
     const payload = {
       Action: "Edit",
@@ -14,7 +14,7 @@ export namespace AppSheetApi {
       Rows: [summary],
     };
 
-    const params = {
+    const params: GoogleAppsScript.URL_Fetch.URLFetchRequestOptions = {
       contentType: "application/json",
       headers: {
         ApplicationAccessKey: APP_SHEET_KEY,

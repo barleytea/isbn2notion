@@ -1,4 +1,4 @@
-import { BookSummary } from "./types";
+import { type BookSummary } from "./types";
 
 export namespace NotionApi {
   const notionEndpoint = "https://api.notion.com/v1/pages";
@@ -7,7 +7,7 @@ export namespace NotionApi {
   const properties = PropertiesService.getScriptProperties().getProperties();
   const { NOTION_TOKEN, NOTION_DB_ID } = properties;
 
-  export const addPageToDatabase = (book: BookSummary) => {
+  export const addPageToDatabase = (book: BookSummary): any => {
     const postData = {
       parent: { database_id: NOTION_DB_ID },
       properties: {
@@ -63,7 +63,7 @@ export namespace NotionApi {
       },
     };
 
-    if (book.cover) {
+    if (book.cover != null) {
       Object.assign(postData, {
         cover: {
           type: "external",
@@ -74,7 +74,7 @@ export namespace NotionApi {
       });
     }
 
-    const options = {
+    const options: GoogleAppsScript.URL_Fetch.URLFetchRequestOptions = {
       method: "post",
       headers: {
         "Content-Type": "application/json; charset=UTF-8",
@@ -87,7 +87,7 @@ export namespace NotionApi {
     return UrlFetchApp.fetch(notionEndpoint, options);
   };
 
-  export const fetchPageByIsbn = (isbn: string) => {
+  export const fetchPageByIsbn = (isbn: string): any => {
     const postData = {
       filter: {
         property: "ISBN",
@@ -97,7 +97,7 @@ export namespace NotionApi {
       },
     };
 
-    const options = {
+    const options: GoogleAppsScript.URL_Fetch.URLFetchRequestOptions = {
       method: "post",
       headers: {
         "Content-Type": "application/json; charset=UTF-8",
@@ -110,8 +110,8 @@ export namespace NotionApi {
     return JSON.parse(
       UrlFetchApp.fetch(
         notionDabaBaseEndPoint + NOTION_DB_ID + "/query",
-        options
-      ).getContentText("UTF-8")
+        options,
+      ).getContentText("UTF-8"),
     );
   };
 }

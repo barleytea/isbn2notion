@@ -1,10 +1,10 @@
 import { Env } from "./env";
 
-function setProperties() {
+const setProperties = (): void => {
   PropertiesService.getScriptProperties().setProperties(Env.properties);
-}
+};
 
-function getProperties() {
+const getProperties = (): void => {
   const properties = PropertiesService.getScriptProperties().getProperties();
   console.log(properties);
-}
+};

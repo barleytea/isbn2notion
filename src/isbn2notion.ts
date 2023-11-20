@@ -1,11 +1,11 @@
-import { AppSheetApi } from "./appSheetApi";
-import { BooksApi } from "./booksApi";
-import { GoogleBooksApi } from "./googleBooksApi";
-import { NotionApi } from "./notionApi";
-import { BookSummary } from "./types";
+import { AppSheetApi } from "./app-sheet-api";
+import { BooksApi } from "./books-api";
+import { GoogleBooksApi } from "./google-books-api";
+import { NotionApi } from "./notion-api";
+import { type BookSummary } from "./types";
 import { Utils } from "./utils";
 
-function doPost(e) {
+function doPost(e: any): void {
   const requestParams = JSON.parse(e.postData.getDataAsString());
 
   // event から必要な情報を取得
@@ -15,11 +15,16 @@ function doPost(e) {
   // ISBN から書誌情報の概要を取得
   const summary: BookSummary = fecthBooksByIsbn(isbnCode);
 
+  if (Object.keys(summary).length === 0) {
+    console.log(`isbn: ${isbnCode} is not found.`);
+    return;
+  }
+
   // notion に既に ISBN が登録済みであれば skip
   const page = NotionApi.fetchPageByIsbn(isbnCode);
-  if (page && page.results && page.results.length > 0) {
+  if (page?.results != null && page.results.length > 0) {
     console.log(
-      `skipped isbn: ${isbnCode}, because this isbn already registered.`
+      `skipped isbn: ${isbnCode}, because this isbn already registered.`,
     );
     return;
   }
@@ -34,29 +39,42 @@ function doPost(e) {
 }
 
 function fecthBooksByIsbn(isbn: string): BookSummary {
+  const bookCoverBaseEndpoint = "https://iss.ndl.go.jp/thumbnail/";
+
   const openBdResponse = BooksApi.fecthBooksByIsbn(isbn);
-  if (openBdResponse) {
+  if (Object.keys(openBdResponse).length > 0) {
     return {
       id: "",
       isbn,
       title: openBdResponse.title,
       publisher: openBdResponse.publisher,
       pubdate: Utils.formatDate(openBdResponse.pubdate),
-      cover: openBdResponse.cover,
+      cover: bookCoverBaseEndpoint + isbn,
       author: openBdResponse.author,
     };
   }
 
   const googleBooksResponse = GoogleBooksApi.fecthBooksByIsbn(isbn);
-  if (googleBooksResponse) {
+  if (googleBooksResponse != null) {
     return {
       id: "",
       isbn,
       title: googleBooksResponse.title,
       publisher: "",
       pubdate: Utils.formatDate(googleBooksResponse.pubdate),
-      cover: "",
+      cover: bookCoverBaseEndpoint + isbn,
       author: googleBooksResponse.author,
     };
   }
+
+  const emptySummary: BookSummary = {
+    id: "",
+    author: "",
+    isbn,
+    title: "",
+    publisher: "",
+    pubdate: "",
+    cover: "",
+  };
+  return emptySummary;
 }

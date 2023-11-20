@@ -1,4 +1,4 @@
-export type BookSummary = {
+export interface BookSummary {
   id: string;
   isbn: string;
   title: string;
@@ -6,4 +6,4 @@ export type BookSummary = {
   pubdate: string;
   cover: string;
   author: string;
-};
+}

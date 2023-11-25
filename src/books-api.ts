@@ -9,17 +9,17 @@ export namespace BooksApi {
       UrlFetchApp.fetch(bookApi + isbn).getContentText("UTF-8"),
     )[0];
     if (response != null) {
-      const empty: BookSummary = {
-        id: "",
-        isbn: "",
-        title: "",
-        publisher: "",
-        pubdate: "",
-        cover: "",
-        author: "",
-      };
-      return empty;
+      return response.summary;
     }
-    return response.summary;
+    const empty: BookSummary = {
+      id: "",
+      isbn: "",
+      title: "",
+      publisher: "",
+      pubdate: "",
+      cover: "",
+      author: "",
+    };
+    return empty;
   };
 }

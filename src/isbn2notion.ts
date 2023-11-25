@@ -5,13 +5,21 @@ import { NotionApi } from "./notion-api";
 import { type BookSummary } from "./types";
 import { Utils } from "./utils";
 
-function doPost(e: any): void {
+const doGet = (e: any): void => {
+  console.log("doGet");
+};
+
+const doPost = (e: any): void => {
   const requestParams = JSON.parse(e.postData.getDataAsString());
 
   // event から必要な情報を取得
   const bookId = requestParams.id;
   const isbnCode = requestParams.isbn;
 
+  handleDoPost(bookId, isbnCode);
+};
+
+const handleDoPost = (bookId: string, isbnCode: string): void => {
   // ISBN から書誌情報の概要を取得
   const summary: BookSummary = fecthBooksByIsbn(isbnCode);
 
@@ -36,7 +44,7 @@ function doPost(e: any): void {
 
   // save to notion
   NotionApi.addPageToDatabase(summary);
-}
+};
 
 function fecthBooksByIsbn(isbn: string): BookSummary {
   const bookCoverBaseEndpoint = "https://iss.ndl.go.jp/thumbnail/";

@@ -114,4 +114,66 @@ export namespace NotionApi {
       ).getContentText("UTF-8"),
     );
   };
+
+  export const patchPageCover = (pageId: string, cover: string): void => {
+    const param = {
+      cover: {
+        type: "external",
+        external: {
+          url: cover,
+        },
+      },
+    };
+
+    const options: GoogleAppsScript.URL_Fetch.URLFetchRequestOptions = {
+      method: "patch",
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+        Authorization: "Bearer " + NOTION_TOKEN,
+        "Notion-Version": "2021-05-13",
+      },
+      payload: JSON.stringify(param),
+    };
+
+    UrlFetchApp.fetch(`${notionEndpoint}/${pageId}`, options);
+  };
+
+  export const listPages = (cursor: string): any => {
+    const postData =
+      cursor === ""
+        ? {
+            sorts: [
+              {
+                property: "created",
+                direction: "ascending",
+              },
+            ],
+          }
+        : {
+            start_cursor: cursor,
+            sorts: [
+              {
+                property: "created",
+                direction: "ascending",
+              },
+            ],
+          };
+
+    const options: GoogleAppsScript.URL_Fetch.URLFetchRequestOptions = {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+        Authorization: "Bearer " + NOTION_TOKEN,
+        "Notion-Version": "2021-05-13",
+      },
+      payload: JSON.stringify(postData),
+    };
+
+    return JSON.parse(
+      UrlFetchApp.fetch(
+        notionDabaBaseEndPoint + NOTION_DB_ID + "/query",
+        options,
+      ).getContentText("UTF-8"),
+    );
+  };
 }

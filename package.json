@@ -19,6 +19,7 @@
   },
   "scripts": {
     "lint": "prettier './src/**/*.{js,ts}' && eslint './src/**/*.{js,ts}'",
-    "lintfix": "prettier --write './src/**/*.{js,ts}' && eslint --fix './src/**/*.{js,ts}'"
+    "lintfix": "prettier --write './src/**/*.{js,ts}' && eslint --fix './src/**/*.{js,ts}'",
+    "deploy": "clasp push && clasp deploy -i AKfycbzCsLQq2ZncbOHl2wYxbifnSUkUCVLTHuEDNiv4yhgHqxAFpGWE8T1vVSxylnZpUkpHnQ"
   }
 }

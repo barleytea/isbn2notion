@@ -1,5 +1,4 @@
 import { AppSheetApi } from "./app-sheet-api";
-import { BooksApi } from "./books-api";
 import { GoogleBooksApi } from "./google-books-api";
 import { NotionApi } from "./notion-api";
 import { type BookSummary } from "./types";
@@ -49,26 +48,13 @@ const handleDoPost = (bookId: string, isbnCode: string): void => {
 function fecthBooksByIsbn(isbn: string): BookSummary {
   const bookCoverBaseEndpoint = "https://iss.ndl.go.jp/thumbnail/";
 
-  const openBdResponse = BooksApi.fecthBooksByIsbn(isbn);
-  if (Object.keys(openBdResponse).length > 0) {
-    return {
-      id: "",
-      isbn,
-      title: openBdResponse.title,
-      publisher: openBdResponse.publisher,
-      pubdate: Utils.formatDate(openBdResponse.pubdate),
-      cover: bookCoverBaseEndpoint + isbn,
-      author: openBdResponse.author,
-    };
-  }
-
   const googleBooksResponse = GoogleBooksApi.fecthBooksByIsbn(isbn);
-  if (googleBooksResponse != null) {
+  if (googleBooksResponse) {
     return {
       id: "",
       isbn,
       title: googleBooksResponse.title,
-      publisher: "",
+      publisher: googleBooksResponse.publisher,
       pubdate: Utils.formatDate(googleBooksResponse.pubdate),
       cover: bookCoverBaseEndpoint + isbn,
       author: googleBooksResponse.author,
